@@ -7,7 +7,8 @@ root=config.DATA_DIR
 
 def get_dataloader():
     transform = torchvision.transforms.Compose([
-        torchvision.transforms.ToTensor()
+        torchvision.transforms.ToTensor(),
+        torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
     ])
 
     train_data = torchvision.datasets.MNIST(
