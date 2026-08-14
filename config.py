@@ -18,13 +18,13 @@ DEVICE = torch.device(
 
 
 # TensorBoard
-LOG_DIR = "./logs_train/exp4"
+LOG_DIR = "./logs_train/exp5"
 
 
 # 模型保存
 CHECKPOINT_DIR = "./checkpoints"
 
-BEST_MODEL_PATH = "./checkpoints/best_exp4.pth"
+BEST_MODEL_PATH = "./checkpoints/best_exp5.pth"
 
 LAST_MODEL_PATH = "./checkpoints/last.pth"
 
