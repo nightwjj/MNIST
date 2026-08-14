@@ -5,17 +5,23 @@ import config
 batch_size = config.BATCH_SIZE
 root=config.DATA_DIR
 
+# mean = (0.1307, )
+# std = (0.3081, )
+mean = (0.5, )
+std = (0.5, )
+
+
 def get_dataloader():
     train_transform = torchvision.transforms.Compose([
             torchvision.transforms.RandomAffine(degrees=10, translate=(0.1, 0.1)),
 
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
+            torchvision.transforms.Normalize(mean, std)
         ])
 
     transform = torchvision.transforms.Compose([
         torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
+        torchvision.transforms.Normalize(mean, std)
     ])
 
     train_data = torchvision.datasets.MNIST(
