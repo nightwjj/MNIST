@@ -7,7 +7,7 @@ DATA_DIR = "./data"
 
 
 # 训练相关
-LR = 1e-2
+LR = 1e-3
 EPOCHS = 10
 
 
@@ -24,7 +24,7 @@ LOG_DIR = "./logs_train/exp1"
 # 模型保存
 CHECKPOINT_DIR = "./checkpoints"
 
-BEST_MODEL_PATH = "./checkpoints/best_exp1.pth"
+BEST_MODEL_PATH = "./checkpoints/best_exp2.pth"
 
 LAST_MODEL_PATH = "./checkpoints/last.pth"
 
