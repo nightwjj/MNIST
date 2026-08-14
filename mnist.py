@@ -39,6 +39,9 @@ def main():
 
     # 优化器
     optim = torch.optim.Adam(model.parameters(), lr=config.LR)
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optim, step_size=config.STEP_SIZE, gamma=config.GAMMA
+    )
 
 
     # 添加tensorboard
@@ -69,6 +72,10 @@ def main():
 
         print(f"训练集loss：{train_loss:.4f}，训练集正确率：{train_accuracy:.4f}")
         print(f"测试集loss：{test_loss:.4f}，测试集正确率：{test_accuracy:.4f}")
+
+        # 更新学习率
+        if config.USE_SCHEDULER:
+            scheduler.step()
 
         writer.add_scalar("Loss/train", train_loss, i)
         writer.add_scalar("Accuracy/train", train_accuracy, i)

@@ -6,6 +6,13 @@ batch_size = config.BATCH_SIZE
 root=config.DATA_DIR
 
 def get_dataloader():
+    train_transform = torchvision.transforms.Compose([
+            torchvision.transforms.RandomAffine(degree=10, translate=(0.1, 0.1)),
+
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
+        ])
+
     transform = torchvision.transforms.Compose([
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
@@ -15,7 +22,7 @@ def get_dataloader():
         root=root, 
         train=True, 
         download=True, 
-        transform=transform
+        transform=train_transform
     )
     
     test_data = torchvision.datasets.MNIST(

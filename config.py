@@ -8,7 +8,12 @@ DATA_DIR = "./data"
 
 # 训练相关
 LR = 1e-3
-EPOCHS = 10
+EPOCHS = 15
+
+# 学习率调度策略
+USE_SCHEDULER = True
+STEP_SIZE = 5
+GAMMA = 0.5
 
 
 # 设备
@@ -18,13 +23,13 @@ DEVICE = torch.device(
 
 
 # TensorBoard
-LOG_DIR = "./logs_train/exp5"
+LOG_DIR = "./logs_train/exp6"
 
 
 # 模型保存
 CHECKPOINT_DIR = "./checkpoints"
 
-BEST_MODEL_PATH = "./checkpoints/best_exp5.pth"
+BEST_MODEL_PATH = "./checkpoints/best_exp6.pth"
 
 LAST_MODEL_PATH = "./checkpoints/last.pth"
 
