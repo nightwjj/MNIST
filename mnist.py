@@ -8,6 +8,7 @@ import config
 
 from models.basic_cnn import Basic_cnn
 from models.m3_cnn import M3CNN
+from models.resnet import SmallResNet
 from dataset import get_dataloader
 from train import train_one_epoch, evaluate
 from utils.checkpoint import save_checkpoint, load_checkpoint
@@ -29,7 +30,8 @@ def main():
 
     # 创建模型
     # model = Basic_cnn().to(config.DEVICE)
-    model = M3CNN().to(config.DEVICE)
+    # model = M3CNN().to(config.DEVICE)
+    model = SmallResNet().to(config.DEVICE)
 
 
     # 损失函数
