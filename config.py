@@ -24,7 +24,7 @@ LOG_DIR = "./logs_train/exp1"
 # 模型保存
 CHECKPOINT_DIR = "./checkpoints"
 
-BEST_MODEL_PATH = "./checkpoints/best.pth"
+BEST_MODEL_PATH = "./checkpoints/best_exp1.pth"
 
 LAST_MODEL_PATH = "./checkpoints/last.pth"
 
