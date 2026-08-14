@@ -1,0 +1,24 @@
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 数据集
+data/
+
+# 模型权重
+checkpoints/
+*.pth
+*.pt
+
+# TensorBoard 日志
+logs_train/
+runs/
+
+# IDE
+.idea/
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db
