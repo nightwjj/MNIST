@@ -7,7 +7,7 @@ root=config.DATA_DIR
 
 def get_dataloader():
     train_transform = torchvision.transforms.Compose([
-            torchvision.transforms.RandomAffine(degree=10, translate=(0.1, 0.1)),
+            torchvision.transforms.RandomAffine(degrees=10, translate=(0.1, 0.1)),
 
             torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
