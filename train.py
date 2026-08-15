@@ -36,7 +36,7 @@ def train_one_epoch(model, train_loader,
 
     return avg_loss, accuracy
 
-def evaluate(model, test_loader, 
+def evaluate(model, data_loader, 
             loss_fn, device):
 
     model.eval()
@@ -45,7 +45,7 @@ def evaluate(model, test_loader,
     total_accuracy = 0
 
     with torch.no_grad():
-        for imgs, targets in test_loader:
+        for imgs, targets in data_loader:
             imgs = imgs.to(device)
             targets = targets.to(device)
 
@@ -57,9 +57,8 @@ def evaluate(model, test_loader,
 
             total_accuracy += (outputs.argmax(1) == targets).sum() 
 
-    avg_loss = total_loss / len(test_loader)
+    avg_loss = total_loss / len(data_loader)
 
-    accuracy = total_accuracy / len(test_loader.dataset)
+    accuracy = total_accuracy / len(data_loader.dataset)
 
     return avg_loss, accuracy
-

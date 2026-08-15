@@ -10,14 +10,14 @@ from utils.checkpoint import load_checkpoint
 def main():
 
     # 获取数据
-    _, test_loader = get_dataloader()
+    _, _, test_loader = get_dataloader()
 
     # 创建模型
     model = Basic_cnn().to(config.DEVICE)
 
     epoch, accuracy = load_checkpoint(
         model=model,
-        optimizer=None, 
+        optimizer=None,
         path=config.BEST_MODEL_PATH,
         device=config.DEVICE
     )

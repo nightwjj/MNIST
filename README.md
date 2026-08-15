@@ -10,7 +10,7 @@
 MNIST/
 │
 ├── data/                  # MNIST 数据集
-├── checkpoints/           # 模型权重与训练状态
+├── checkpoints/           # 最佳模型权重
 ├── logs_train/            # TensorBoard 日志
 │
 ├── models/
@@ -46,17 +46,18 @@ MNIST/
 * [x] TensorBoard 日志记录
 * [x] `config.py` 统一管理配置
 * [x] 项目代码模块化拆分
-* [x] Checkpoint 保存与加载基础功能
-* [x] 根据测试集准确率保存最佳模型
+* [x] 最佳模型 Checkpoint 保存与加载
+* [x] 根据验证集准确率保存最佳模型
 * [x] StepLR 学习率调度器
 * [x] 固定随机种子
+* [x] Train / Validation / Test 正式划分
+* [x] `argparse` 基础命令行参数
 * [x] `.gitignore`
 * [x] `requirements.txt`
 * [x] `README.md`
 
 目前正在进行：
 
-* [ ] 完善断点续训流程
 * [ ] 对比 BasicCNN、M3CNN 和 SmallResNet
 * [ ] 调整模型结构提高准确率
 * [ ] 调整 Epoch、Learning Rate、Batch Size 等超参数
@@ -66,9 +67,7 @@ MNIST/
 后续准备逐步加入：
 
 * [ ] 更完善的学习率调度策略
-* [ ] Train / Validation / Test 正式划分
 * [ ] 不同模型与超参数实验对比
-* [ ] `argparse` 命令行参数
 * [ ] 更完善的实验管理
 
 ## 运行

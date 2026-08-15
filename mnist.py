@@ -21,22 +21,24 @@ def main():
 
     set_seed(config.SEED)
 
-    train_loader, test_loader = get_dataloader()
+    train_loader, val_loader, test_loader = get_dataloader()
 
 
     len_train = len(train_loader.dataset)
+    len_val = len(val_loader.dataset)
     len_test = len(test_loader.dataset)
 
 
     print(
         f"训练集长度：{len_train}, "
+        f"验证集长度：{len_val}, "
         f"测试集长度：{len_test}"
     )
 
 
     # 创建模型
-    model = Basic_cnn().to(config.DEVICE)
-    # model = M3CNN().to(config.DEVICE)
+    # model = Basic_cnn().to(config.DEVICE)
+    model = M3CNN().to(config.DEVICE)
     # model = SmallResNet().to(config.DEVICE)
 
 
@@ -49,9 +51,11 @@ def main():
 
     # 优化器
     optim = torch.optim.Adam(model.parameters(), lr=config.LR)
-    scheduler = torch.optim.lr_scheduler.StepLR(
-        optim, step_size=config.STEP_SIZE, gamma=config.GAMMA
-    )
+    scheduler = None
+    if config.USE_SCHEDULER:
+        scheduler = torch.optim.lr_scheduler.StepLR(
+            optim, step_size=config.STEP_SIZE, gamma=config.GAMMA
+        )
 
 
     # 添加tensorboard
@@ -73,37 +77,57 @@ def main():
             device=config.DEVICE
             )
 
-        test_loss, test_accuracy = evaluate(
-                model=model,
-                test_loader=test_loader,
-                loss_fn=loss_fn,
-                device=config.DEVICE
+        val_loss, val_accuracy = evaluate(
+            model=model,
+            data_loader=val_loader,
+            loss_fn=loss_fn,
+            device=config.DEVICE,
             )
 
         print(f"训练集loss：{train_loss:.4f}，训练集正确率：{train_accuracy:.4f}")
-        print(f"测试集loss：{test_loss:.4f}，测试集正确率：{test_accuracy:.4f}")
+        print(f"验证集loss：{val_loss:.4f}，验证集正确率：{val_accuracy:.4f}")
 
         # 更新学习率
-        if config.USE_SCHEDULER:
+        if scheduler is not None:
             scheduler.step()
 
         writer.add_scalar("Loss/train", train_loss, i)
         writer.add_scalar("Accuracy/train", train_accuracy, i)
-        writer.add_scalar("Loss/test", test_loss, i)
-        writer.add_scalar("Accuracy/test", test_accuracy, i)
+        writer.add_scalar("Loss/val", val_loss, i)
+        writer.add_scalar("Accuracy/val", val_accuracy, i)
 
-        if test_accuracy > best_accuracy:
-            best_accuracy = test_accuracy
-            save_checkpoint(model=model,
-                            optimizer=optim,
-                            epoch=i+1,
-                            accuracy=test_accuracy,
-                            path=config.BEST_MODEL_PATH
-                            )
+        if val_accuracy > best_accuracy:
+            best_accuracy = val_accuracy
 
-            print(f"保存最佳模型，"f"accuracy：{best_accuracy:.4f}")
+            save_checkpoint(
+                model=model,
+                optimizer=optim,
+                epoch=i + 1,
+                accuracy=val_accuracy,
+                path=config.BEST_MODEL_PATH,
+            )
 
-    print(f"本轮最高准确率：{best_accuracy:.4f}")
+            print(f"保存最佳模型，"f"验证集 accuracy：{best_accuracy:.4f}")
+
+    print(f"最高验证集准确率：{best_accuracy:.4f}")
+
+    print("---------加载最佳模型----------")
+
+    best_epoch, best_val_accuracy = load_checkpoint(
+        model=model,
+        optimizer=None,
+        path=config.BEST_MODEL_PATH, device=config.DEVICE
+    )
+
+    test_loss, test_accuracy = evaluate(
+                model=model, data_loader=test_loader,
+                loss_fn=loss_fn, device=config.DEVICE,
+                )
+
+    print(f"最佳模型来自第 {best_epoch} 轮")
+    print(f"最佳验证集准确率：{best_val_accuracy:.4f}")
+    print(f"最终测试集 loss：{test_loss:.4f}")
+    print(f"最终测试集准确率：{test_accuracy:.4f}")
 
     writer.close()
 
