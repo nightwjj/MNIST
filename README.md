@@ -15,17 +15,20 @@ MNIST/
 │
 ├── models/
 │   ├── __init__.py
-│   └── basic_cnn.py       # BasicCNN
+│   ├── basic_cnn.py       # BasicCNN
+│   ├── m3_cnn.py          # M3CNN
+│   └── resnet.py          # SmallResNet
 │
 ├── utils/
 │   ├── __init__.py
-│   └── checkpoint.py      # Checkpoint 保存与加载
+│   ├── checkpoint.py      # Checkpoint 保存与加载
+│   └── seed.py            # 固定随机种子
 │
 ├── config.py              # 超参数与路径配置
 ├── dataset.py             # 数据集与 DataLoader
 ├── train.py               # 训练
 ├── test.py                # 测试
-├── main.py                # 程序入口
+├── mnist.py               # 训练程序入口
 │
 ├── .gitignore
 ├── requirements.txt
@@ -36,35 +39,34 @@ MNIST/
 
 目前已经完成：
 
-* [x] MNIST 数据集与 DataLoader
-* [x] BasicCNN 模型
+* [x] MNIST 数据集、DataLoader 与基础数据增强
+* [x] BasicCNN、M3CNN 和 SmallResNet 模型
 * [x] 模型训练与测试
 * [x] Loss / Accuracy 统计
 * [x] TensorBoard 日志记录
 * [x] `config.py` 统一管理配置
 * [x] 项目代码模块化拆分
-* [x] Checkpoint 保存与加载
-* [x] 支持断点续训
+* [x] Checkpoint 保存与加载基础功能
+* [x] 根据测试集准确率保存最佳模型
+* [x] StepLR 学习率调度器
+* [x] 固定随机种子
 * [x] `.gitignore`
 * [x] `requirements.txt`
 * [x] `README.md`
 
-目前正在改进：
+目前正在进行：
 
-* [ ] 使用 SmallResNet 替换 BasicCNN
+* [ ] 完善断点续训流程
+* [ ] 对比 BasicCNN、M3CNN 和 SmallResNet
 * [ ] 调整模型结构提高准确率
 * [ ] 调整 Epoch、Learning Rate、Batch Size 等超参数
-* [ ] 加入 Learning Rate Scheduler
 
 ## 后续计划
 
 后续准备逐步加入：
 
-* [ ] 固定随机种子
 * [ ] 更完善的学习率调度策略
-* [ ] 数据增强
 * [ ] Train / Validation / Test 正式划分
-* [ ] Best Model 保存
 * [ ] 不同模型与超参数实验对比
 * [ ] `argparse` 命令行参数
 * [ ] 更完善的实验管理
@@ -80,7 +82,7 @@ pip install -r requirements.txt
 运行项目：
 
 ```bash
-python main.py
+python mnist.py
 ```
 
 查看 TensorBoard：

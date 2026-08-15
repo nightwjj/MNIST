@@ -8,7 +8,7 @@ DATA_DIR = "./data"
 
 # 训练相关
 LR = 1e-3
-EPOCHS = 50
+EPOCHS = 10
 
 # 学习率调度策略
 USE_SCHEDULER = True
@@ -23,15 +23,19 @@ DEVICE = torch.device(
 
 
 # TensorBoard
-LOG_DIR = "./logs_train/exp10_resnet"
+LOG_DIR = "./logs_train/exp11"
 
 
 # 模型保存
 CHECKPOINT_DIR = "./checkpoints"
 
-BEST_MODEL_PATH = "./checkpoints/best_exp10_resnet.pth"
+BEST_MODEL_PATH = "./checkpoints/best_exp11.pth"
 
 LAST_MODEL_PATH = "./checkpoints/last.pth"
 
 # 是否断点续训
 RESUME = False
+
+# 随机种子
+SEED = 42
+

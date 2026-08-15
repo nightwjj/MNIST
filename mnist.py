@@ -12,8 +12,14 @@ from models.resnet import SmallResNet
 from dataset import get_dataloader
 from train import train_one_epoch, evaluate
 from utils.checkpoint import save_checkpoint, load_checkpoint
+from utils.seed import set_seed
+
+from arguments import parse_args
 
 def main():
+    args = parse_args()
+
+    set_seed(config.SEED)
 
     train_loader, test_loader = get_dataloader()
 
@@ -29,9 +35,9 @@ def main():
 
 
     # 创建模型
-    # model = Basic_cnn().to(config.DEVICE)
+    model = Basic_cnn().to(config.DEVICE)
     # model = M3CNN().to(config.DEVICE)
-    model = SmallResNet().to(config.DEVICE)
+    # model = SmallResNet().to(config.DEVICE)
 
 
     # 损失函数
@@ -55,7 +61,7 @@ def main():
     best_accuracy = 0.0
 
 
-    for i in range(config.EPOCHS):
+    for i in range(args.epochs):
         print(f"--------第{i+1}轮训练开始--------")
 
         # 训练开始
