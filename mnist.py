@@ -49,7 +49,7 @@ def main():
 
 
     # 添加tensorboard
-    writer = SummaryWriter(config.DATA_DIR)
+    writer = SummaryWriter(config.LOG_DIR)
 
     # 保存准确率最高模型
     best_accuracy = 0.0
