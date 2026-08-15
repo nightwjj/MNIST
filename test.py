@@ -3,7 +3,7 @@ from torch import nn
 import config
 
 from dataset import get_dataloader
-from models.basic_cnn import Basic_cnn
+from models.build import build_model
 from train import evaluate
 from utils.checkpoint import load_checkpoint
 
@@ -13,7 +13,7 @@ def main():
     _, _, test_loader = get_dataloader()
 
     # 创建模型
-    model = Basic_cnn().to(config.DEVICE)
+    model = build_model(config.MODEL_NAME).to(config.DEVICE)
 
     epoch, accuracy = load_checkpoint(
         model=model,

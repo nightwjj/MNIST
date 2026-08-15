@@ -5,19 +5,46 @@ from torch import nn
 
 import config
 
-
-from models.basic_cnn import Basic_cnn
-from models.m3_cnn import M3CNN
-from models.resnet import SmallResNet
+from models.build import build_model
 from dataset import get_dataloader
 from train import train_one_epoch, evaluate
 from utils.checkpoint import save_checkpoint, load_checkpoint
 from utils.seed import set_seed
+from utils.experiment import (save_experiment_config,save_experiment_results)
 
 from arguments import parse_args
 
 def main():
     args = parse_args()
+
+    experiment_config = {
+                        "experiment_name": config.EXPERIMENT_NAME,
+                        "model_name": config.MODEL_NAME,
+                        "batch_size": config.BATCH_SIZE,
+                        "val_size": config.VAL_SIZE,
+                        "learning_rate": config.LR,
+                        "epochs": args.epochs,
+                        "optimizer": "Adam",
+                        "use_scheduler": config.USE_SCHEDULER,
+                        "step_size": (
+                            config.STEP_SIZE
+                            if config.USE_SCHEDULER
+                            else None
+                        ),
+                        "gamma": (
+                            config.GAMMA
+                            if config.USE_SCHEDULER
+                            else None
+                        ),
+                        "seed": config.SEED,
+                        "device": str(config.DEVICE),
+                        }
+    config_path = save_experiment_config(
+        experiment_config=experiment_config,
+        output_dir=config.OUTPUT_DIR,
+    )
+
+    print(f"实验配置已保存：{config_path}")
 
     set_seed(config.SEED)
 
@@ -37,10 +64,12 @@ def main():
 
 
     # 创建模型
-    # model = Basic_cnn().to(config.DEVICE)
-    model = M3CNN().to(config.DEVICE)
-    # model = SmallResNet().to(config.DEVICE)
+    model = build_model(config.MODEL_NAME)
+    model = model.to(config.DEVICE)
 
+    print(f"当前模型：{config.MODEL_NAME}")
+    print(f"实验名称：{config.EXPERIMENT_NAME}")
+    print(f"实验目录：{config.OUTPUT_DIR}")
 
     # 损失函数
     loss_fn = nn.CrossEntropyLoss()
@@ -128,6 +157,22 @@ def main():
     print(f"最佳验证集准确率：{best_val_accuracy:.4f}")
     print(f"最终测试集 loss：{test_loss:.4f}")
     print(f"最终测试集准确率：{test_accuracy:.4f}")
+
+    experiment_results = {
+        "experiment_name": config.EXPERIMENT_NAME,
+        "model_name": config.MODEL_NAME,
+        "best_epoch": best_epoch,
+        "best_val_accuracy": float(best_val_accuracy),
+        "test_loss": float(test_loss),
+        "test_accuracy": float(test_accuracy),
+    }
+
+    results_path = save_experiment_results(
+        experiment_results=experiment_results,
+        output_dir=config.OUTPUT_DIR,
+    )
+
+    print(f"实验结果已保存：{results_path}")
 
     writer.close()
 
